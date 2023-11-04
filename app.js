@@ -1,6 +1,6 @@
 import express from 'express'
 import { corsMiddleware } from './middlewares/cors.js'
-import { createUsersRouter } from './routes/users.js'
+import { usersRouter } from './routes/users.js'
 import 'dotenv/config'
 
 export const createApp = ({ usersModel }) => {
@@ -9,7 +9,7 @@ export const createApp = ({ usersModel }) => {
 	app.use(corsMiddleware())
 	app.disable('x-powered-by')
 
-	app.use('/users', createUsersRouter({ usersModel }))
+	app.use('/users', usersRouter({ usersModel }))
 
 	const SERVER_PORT = process.env.SERVER_PORT
 

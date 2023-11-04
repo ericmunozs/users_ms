@@ -25,4 +25,17 @@ export class UsersController {
 			res.status(500).json({ message: 'Error interno del servidor', error: error.message })
 		}
 	}
+
+	delete = async (req, res) => {
+		try {
+			const { userId } = req.params
+
+			await this.usersModel.deleteUser(userId)
+
+			res.status(204).send()
+		} catch (error) {
+			console.error('Error al procesar la solicitud:', error)
+			res.status(500).json({ message: 'Error interno del servidor', error: error.message })
+		}
+	}
 }

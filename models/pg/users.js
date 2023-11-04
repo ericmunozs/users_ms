@@ -83,4 +83,27 @@ export class UsersModel {
 			throw new Error('No se pudo crear el usuario: ' + error.message)
 		}
 	}
+
+	static async getUserById(userId) {
+		try {
+			const user = await User.findByPk(userId)
+			return user
+		} catch (error) {
+			throw new Error('No se pudo encontrar el usuario: ' + error.message)
+		}
+	}
+
+	static async deleteUser(userId) {
+		try {
+			const user = await UsersModel.getUserById(userId);
+
+			if (!user) {
+				throw new Error('Usuario no encontrado');
+			}
+
+			await user.destroy()
+		} catch (error) {
+			throw new Error('No se pudo eliminar el usuario: ' + error.message)
+		}
+	}
 }
