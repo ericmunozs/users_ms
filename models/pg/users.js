@@ -106,4 +106,19 @@ export class UsersModel {
 			throw new Error('No se pudo eliminar el usuario: ' + error.message)
 		}
 	}
+
+	static async updateUser(userId, userData) {
+		try {
+			const user = await UsersModel.getUserById(userId);
+
+			if (!user) {
+				throw new Error('Usuario no encontrado');
+			}
+
+			const updatedUser = await user.update(userData)
+			return updatedUser
+		} catch (error) {
+			throw new Error('No se pudo actualizar el usuario: ' + error.message)
+		}
+	}
 }

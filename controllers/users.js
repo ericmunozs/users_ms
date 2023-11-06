@@ -38,4 +38,18 @@ export class UsersController {
 			res.status(500).json({ message: 'Error interno del servidor', error: error.message })
 		}
 	}
+
+	update = async (req, res) => {
+		try {
+			const { userId } = req.params
+			const userData = req.body
+
+			const updatedUser = await this.usersModel.updateUser(userId, userData)
+
+			res.status(200).json(updatedUser)
+		} catch (error) {
+			console.error('Error al procesar la solicitud:', error)
+			res.status(500).json({ message: 'Error interno del servidor', error: error.message })
+		}
+	}
 }

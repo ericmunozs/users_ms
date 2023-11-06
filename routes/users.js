@@ -8,6 +8,7 @@ export const usersRouter = ({ usersModel }) => {
 
 	usersRouter.post('/', usersController.create)
 	usersRouter.delete('/:userId', usersController.delete)
+	usersRouter.put('/:userId', usersController.update)
 
 	return usersRouter
 }
