@@ -1,5 +1,6 @@
 import pg from 'pg'
 import { Sequelize, DataTypes } from 'sequelize'
+import bcrypt from 'bcrypt'
 
 const { Client } = pg
 
@@ -75,7 +76,15 @@ async function connectToDatabase() {
 connectToDatabase()
 
 export class UsersModel {
+	static async hashPassword(password) {
+		const saltRounds = 10
+		const salt = await bcrypt.genSalt(saltRounds)
+		const hashedPassword = await bcrypt.hash(password, salt)
+		return hashedPassword
+	}
+
 	static async createUser(userData) {
+		userData.password = await UsersModel.hashPassword(userData.password)
 		try {
 			const user = await User.create(userData)
 			return user
@@ -95,10 +104,10 @@ export class UsersModel {
 
 	static async deleteUser(userId) {
 		try {
-			const user = await UsersModel.getUserById(userId);
+			const user = await UsersModel.getUserById(userId)
 
 			if (!user) {
-				throw new Error('Usuario no encontrado');
+				throw new Error('Usuario no encontrado')
 			}
 
 			await user.destroy()
@@ -109,10 +118,10 @@ export class UsersModel {
 
 	static async updateUser(userId, userData) {
 		try {
-			const user = await UsersModel.getUserById(userId);
+			const user = await UsersModel.getUserById(userId)
 
 			if (!user) {
-				throw new Error('Usuario no encontrado');
+				throw new Error('Usuario no encontrado')
 			}
 
 			const updatedUser = await user.update(userData)
