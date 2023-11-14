@@ -117,6 +117,10 @@ export class UsersModel {
 	}
 
 	static async updateUser(userId, userData) {
+		if (userData.password) {
+			userData.password = await UsersModel.hashPassword(userData.password)
+		}
+
 		try {
 			const user = await UsersModel.getUserById(userId)
 
