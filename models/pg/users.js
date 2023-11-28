@@ -83,7 +83,23 @@ export class UsersModel {
 		return hashedPassword
 	}
 
+	static async validateExistingUser(userData) {
+		const existingUser = await User.findOne({
+			where: {
+				[Sequelize.Op.or]: [
+					{ email: userData.email },
+					{ username: userData.username },
+				],
+			},
+		})
+
+		if (existingUser) {
+			throw new Error('Correo electrónico o nombre de usuario ya en uso')
+		}
+	}
+
 	static async createUser(userData) {
+		await UsersModel.validateExistingUser(userData)
 		userData.password = await UsersModel.hashPassword(userData.password)
 		try {
 			const user = await User.create(userData)
